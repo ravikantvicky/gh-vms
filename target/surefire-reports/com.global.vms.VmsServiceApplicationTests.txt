@@ -1,0 +1,9 @@
+-------------------------------------------------------------------------------
+Test set: com.global.vms.VmsServiceApplicationTests
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 1.503 s <<< FAILURE! - in com.global.vms.VmsServiceApplicationTests
+contextLoads(com.global.vms.VmsServiceApplicationTests)  Time elapsed: 0.001 s  <<< ERROR!
+java.lang.IllegalStateException: Failed to load ApplicationContext
+Caused by: org.springframework.beans.factory.BeanDefinitionStoreException: Failed to parse configuration class [com.global.vms.VmsServiceApplication]; nested exception is java.io.FileNotFoundException: Could not open ServletContext resource [/messages.properties]
+Caused by: java.io.FileNotFoundException: Could not open ServletContext resource [/messages.properties]
+

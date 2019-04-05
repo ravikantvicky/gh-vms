@@ -49,7 +49,9 @@ public class VMSInterceptor implements HandlerInterceptor {
 			response.getWriter().write(new ObjectMapper().writeValueAsString(unauthorizedResponse));
 			return false;
 		}
-		response.setHeader("Access-Control-Allow-Origin", "*");
+
+		response.setHeader("Access-Control-Allow-Origin",
+				request.getHeader("Origin") == null ? request.getHeader("Origin") : request.getHeader("origin"));
 		response.setHeader("Access-Control-Allow-Credentials", "true");
 		response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
 		response.setHeader("Access-Control-Max-Age", "3600");

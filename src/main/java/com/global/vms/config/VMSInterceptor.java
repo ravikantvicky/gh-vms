@@ -22,19 +22,25 @@ public class VMSInterceptor implements HandlerInterceptor {
 
 	@Autowired
 	TokenUtils tokenUtils;
-	
+
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
 		String token = request.getHeader(env.getProperty("key.header.token", "access-token"));
 		if (token == null || !tokenUtils.verifyToken(token, WebUtils.getIp(request))) {
-		ServiceResponse<Object> unauthorizedResponse = new ServiceResponse<>(
-				env.getProperty("status.unauthorized", Integer.class), env.getProperty("message.unauthorized"), null);
+			ServiceResponse<Object> unauthorizedResponse = new ServiceResponse<>(
+					env.getProperty("status.unauthorized", Integer.class), env.getProperty("message.unauthorized"),
+					null);
 
-		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-		response.getWriter().write(new ObjectMapper().writeValueAsString(unauthorizedResponse));
-		return false;
+			response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+			response.getWriter().write(new ObjectMapper().writeValueAsString(unauthorizedResponse));
+			return false;
 		}
+		response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
+		response.setHeader("Access-Control-Allow-Credentials", "true");
+		response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
+		response.setHeader("Access-Control-Max-Age", "3600");
+		response.setHeader("Access-Control-Allow-Headers", "Content-Type, Accept, X-Requested-With, remember-me");
 		return HandlerInterceptor.super.preHandle(request, response, handler);
 	}
 }

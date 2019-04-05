@@ -8,6 +8,7 @@ import org.springframework.context.annotation.PropertySources;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.web.filter.CommonsRequestLoggingFilter;
 
 @SpringBootApplication
 @PropertySources({ @PropertySource("classpath:vms.properties"), @PropertySource("classpath:db.properties"),
@@ -27,5 +28,14 @@ public class GhVmsApplication {
 		executor.setMaxPoolSize(10);
 		executor.setQueueCapacity(25);
 		return executor;
+	}
+
+	@Bean
+	public CommonsRequestLoggingFilter requestLoggingFilter() {
+		CommonsRequestLoggingFilter loggingFilter = new CommonsRequestLoggingFilter();
+		loggingFilter.setIncludeClientInfo(true);
+		loggingFilter.setIncludeQueryString(true);
+		loggingFilter.setIncludePayload(true);
+		return loggingFilter;
 	}
 }

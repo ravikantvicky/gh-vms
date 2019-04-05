@@ -65,4 +65,16 @@ public class VMSInterceptor implements HandlerInterceptor {
 		log.info("Request Header at end of interceptor: {}", reqheader);
 		return HandlerInterceptor.super.preHandle(request, response, handler);
 	}
+
+	@Override
+	public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex)
+			throws Exception {
+		response.setHeader("Access-Control-Allow-Origin",
+				request.getHeader("Origin") == null ? request.getHeader("Origin") : request.getHeader("origin"));
+		response.setHeader("Access-Control-Allow-Credentials", "true");
+		response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
+		response.setHeader("Access-Control-Max-Age", "3600");
+		response.setHeader("Access-Control-Allow-Headers", "Content-Type, Accept, X-Requested-With, remember-me");
+		HandlerInterceptor.super.afterCompletion(request, response, handler, ex);
+	}
 }

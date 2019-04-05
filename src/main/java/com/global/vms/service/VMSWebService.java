@@ -21,6 +21,7 @@ import com.global.vms.helper.TokenUtils;
 import com.global.vms.model.ApprovedVisitorsToday;
 import com.global.vms.model.Employee;
 import com.global.vms.model.EmployeeFamily;
+import com.global.vms.model.PoiRequest;
 import com.global.vms.model.RegVisitorResponse;
 import com.global.vms.model.ServiceResponse;
 import com.global.vms.model.VisitorRegisterationRequest;
@@ -140,6 +141,17 @@ public class VMSWebService {
 			throw e;
 		} catch (Exception e) {
 			log.error("Error in fetchEmployeeById service: ", e);
+			throw new VMSException(env.getProperty("errormsg.generic"));
+		}
+	}
+	
+	public void addPoi(PoiRequest request) throws VMSException {
+		try {
+			vmsWebRepository.addPoi(request);
+		} catch (VMSException e) {
+			throw e;
+		} catch (Exception e) {
+			log.error("Error in addPoi service: ", e);
 			throw new VMSException(env.getProperty("errormsg.generic"));
 		}
 	}

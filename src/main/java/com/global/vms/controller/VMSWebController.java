@@ -18,6 +18,7 @@ import com.global.vms.exception.VMSException;
 import com.global.vms.model.ApprovedVisitorsToday;
 import com.global.vms.model.Employee;
 import com.global.vms.model.EmployeeFamily;
+import com.global.vms.model.PoiRequest;
 import com.global.vms.model.ServiceResponse;
 import com.global.vms.model.VisitorRegisterationRequest;
 import com.global.vms.model.VisitorRegistrationResponse;
@@ -92,6 +93,21 @@ public class VMSWebController {
 			throw e;
 		} catch (Exception e) {
 			log.error("Error in getEmployeeDetails: ", e);
+			throw new VMSException(env.getProperty("errormsg.generic"));
+		}
+	}
+
+	@PostMapping("/web/addPoi")
+	public ServiceResponse<Object> addPoi(@RequestBody List<PoiRequest> request, HttpServletRequest req)
+			throws VMSException {
+		try {
+			vmsWebService.addPoi(request.get(0));
+			return new ServiceResponse<>(env.getProperty("status.success", Integer.class),
+					"Person of Interest added successfully !", null);
+		} catch (VMSException e) {
+			throw e;
+		} catch (Exception e) {
+			log.error("Error in addPoi: ", e);
 			throw new VMSException(env.getProperty("errormsg.generic"));
 		}
 	}

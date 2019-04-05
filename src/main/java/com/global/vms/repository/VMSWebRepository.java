@@ -17,6 +17,7 @@ import org.springframework.stereotype.Repository;
 
 import com.global.vms.exception.VMSException;
 import com.global.vms.model.EmployeeFamily;
+import com.global.vms.model.PoiRequest;
 import com.global.vms.model.ApprovedVisitorsToday;
 import com.global.vms.model.Approver;
 import com.global.vms.model.Employee;
@@ -134,6 +135,16 @@ public class VMSWebRepository {
 			return emp.get(0);
 		} catch (Exception e) {
 			log.error("Error in deleteVisitor:", e);
+			throw new VMSException(env.getProperty("errormsg.generic"));
+		}
+	}
+	
+	public void addPoi(PoiRequest request) throws VMSException {
+		try {
+			String sql = env.getProperty("sql.poi.add");
+			jdbcTemplate.update(sql, new Object[] {request.getName(), request.getType(), request.getPhoto(), request.getDescription()});
+		} catch (Exception e) {
+			log.error("Error in addPoi:", e);
 			throw new VMSException(env.getProperty("errormsg.generic"));
 		}
 	}

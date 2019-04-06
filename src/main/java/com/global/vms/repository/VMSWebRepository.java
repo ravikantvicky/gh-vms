@@ -64,7 +64,7 @@ public class VMSWebRepository {
 					ps.setString(3, regRequest.getEmail());
 					ps.setString(4, regRequest.getMobile());
 					ps.setLong(5, regRequest.getPhoto());
-					ps.setLong(6, regRequest.getRefferedBy());
+					ps.setLong(6, (regRequest.getRefferedBy() == 0 ? null : regRequest.getRefferedBy()));
 					ps.setString(7, VMSUtil.formatStringDate(regRequest.getInTime(),
 							env.getProperty("dateformat.default"), env.getProperty("dateformat.default")));
 					ps.setString(8, VMSUtil.formatStringDate(regRequest.getOutTime(),

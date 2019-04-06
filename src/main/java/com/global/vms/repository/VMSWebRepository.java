@@ -57,20 +57,32 @@ public class VMSWebRepository {
 
 				@Override
 				public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
-					PreparedStatement ps = con.prepareStatement(env.getProperty("sql.visitor.register"),
-							Statement.RETURN_GENERATED_KEYS);
+					PreparedStatement ps = con
+							.prepareStatement(
+									(regRequest.getRefferedBy() == 0 ? env.getProperty("sql.visitor.register.noref")
+											: env.getProperty("sql.visitor.register")),
+									Statement.RETURN_GENERATED_KEYS);
 					ps.setString(1, regRequest.getVisitorType());
 					ps.setString(2, regRequest.getName());
 					ps.setString(3, regRequest.getEmail());
 					ps.setString(4, regRequest.getMobile());
 					ps.setLong(5, regRequest.getPhoto());
-					ps.setLong(6, (regRequest.getRefferedBy() == 0 ? null : regRequest.getRefferedBy()));
-					ps.setString(7, VMSUtil.formatStringDate(regRequest.getInTime(),
-							env.getProperty("dateformat.default"), env.getProperty("dateformat.default")));
-					ps.setString(8, VMSUtil.formatStringDate(regRequest.getOutTime(),
-							env.getProperty("dateformat.default"), env.getProperty("dateformat.default")));
-					ps.setLong(9, status);
-					ps.setLong(10, valSpotRegistration);
+					if (regRequest.getRefferedBy() > 0) {
+						ps.setLong(6, regRequest.getRefferedBy());
+						ps.setString(7, VMSUtil.formatStringDate(regRequest.getInTime(),
+								env.getProperty("dateformat.default"), env.getProperty("dateformat.default")));
+						ps.setString(8, VMSUtil.formatStringDate(regRequest.getOutTime(),
+								env.getProperty("dateformat.default"), env.getProperty("dateformat.default")));
+						ps.setLong(9, status);
+						ps.setLong(10, valSpotRegistration);
+					} else {
+						ps.setString(6, VMSUtil.formatStringDate(regRequest.getInTime(),
+								env.getProperty("dateformat.default"), env.getProperty("dateformat.default")));
+						ps.setString(7, VMSUtil.formatStringDate(regRequest.getOutTime(),
+								env.getProperty("dateformat.default"), env.getProperty("dateformat.default")));
+						ps.setLong(8, status);
+						ps.setLong(9, valSpotRegistration);
+					}
 					return ps;
 				}
 			}, holder);

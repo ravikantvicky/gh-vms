@@ -151,7 +151,7 @@ public class RegisterVisitor implements Callable<RegVisitorResponse> {
 			MailData mail = new MailData();
 			mail.setSubject(env.getProperty("mail.approval.subject"));
 			mail.setTo(new ArrayList<>());
-			mail.getTo().add(profile.getEmail());
+			mail.getTo().add(app.getEmail());
 			mail.setMailBody(mailBody);
 			mail.setInlineAttachments(new ArrayList<>());
 			mail.getInlineAttachments().add(new MailAttachment("logo", null,
